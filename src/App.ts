@@ -3,7 +3,7 @@ import express from 'express'
 import { createConnection } from 'typeorm'
 
 export default class App {
-    private port: string = process.env.PORT
+    private port = process.env.PORT
     public app: express.Application
 
     public constructor () {
