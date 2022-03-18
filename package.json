@@ -6,10 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.ts",
-    "start": "ts-node src/index.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/runmand/micro-api-plataforma-ufpe.git"
+    "start": "ts-node src/index.ts"
   },
   "author": "",
   "license": "ISC",
