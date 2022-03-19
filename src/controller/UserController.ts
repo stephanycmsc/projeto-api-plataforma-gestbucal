@@ -1,26 +1,49 @@
 import {getRepository} from "typeorm";
-import {NextFunction, Request, Response} from "express";
-import {User} from "../entity/User";
+import {Request, Response, Router} from "express";
+import {Users} from "../entity/Users";
 
-export class UserController {
+export default class UserController {
+    getUsers = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const userRepo = getRepository(Users)
 
-    private userRepository = getRepository(User);
+            /////// throw new Error('Erro forçado')
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.find();
+
+            return res.json({
+                status: 0,
+                data: await userRepo.findAndCount(),
+                message: ''
+            })
+        } catch (error) {
+            return res.json({
+                status: 1,
+                data: null,
+                message: typeof(error) === 'string' ? error : error.message
+            })
+        }
+
     }
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.findOne(request.params.id);
+    addUser = async (req: Request, res: Response): Promise<Response> => {
+        const userRepo = getRepository(Users)
+
+        const result = userRepo.save({
+            id: 1,  /** Quando define o ID faz um UPDATE, sem o ID faz um CREATE */
+            age: 20,
+            firstName: 'Steph02',
+            lastName: 'Carvalho'
+        })
+
+        return res.json({
+            status: 0,
+            data: null,
+            message: 'Created'
+        })
     }
 
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.save(request.body);
+    setRoutes(router: Router) {
+        router.get('/users', this.getUsers)
+        router.post('/users', this.addUser)
     }
-
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let userToRemove = await this.userRepository.findOne(request.params.id);
-        await this.userRepository.remove(userToRemove);
-    }
-
 }
