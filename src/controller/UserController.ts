@@ -1,3 +1,4 @@
+import * as express from "express"
 import {getRepository} from "typeorm";
 import {Request, Response, Router} from "express";
 import {Users} from "../entity/Users";
@@ -40,10 +41,19 @@ export default class UserController {
             data: null,
             message: 'Created'
         })
+
+    
     }
+
+    update = async (req: Request, res: Response): Promise<Response> => {
+        const userRepo = await getRepository(Users).findOne(req.params.id)
+        getRepository(Users).merge(userRepo, req.body)
+    }
+
 
     setRoutes(router: Router) {
         router.get('/users', this.getUsers)
         router.post('/users', this.addUser)
+        router.put('/users:id', this.update)
     }
 }
