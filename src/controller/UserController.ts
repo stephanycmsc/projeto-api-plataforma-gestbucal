@@ -1,6 +1,7 @@
 import {getRepository} from "typeorm";
 import {Request, Response, Router} from "express";
 import {Users} from "../entity/Users";
+import moment from "moment";
 
 export default class UserController {
     getUsers = async (req: Request, res: Response): Promise<Response> => {
@@ -26,24 +27,34 @@ export default class UserController {
     }
 
     addUser = async (req: Request, res: Response): Promise<Response> => {
-        const userRepo = getRepository(Users)
+        try {
+            const userRepo = getRepository(Users)
+            const result = await userRepo.save({
+                age: req.body.age,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName
+            })
 
-        const result = userRepo.save({
-            id: 1,  /** Quando define o ID faz um UPDATE, sem o ID faz um CREATE */
-            age: 20,
-            firstName: 'Steph02',
-            lastName: 'Carvalho'
-        })
+            return res.json(result)
+        } catch (error) {
+            return res.json(typeof(error) === 'object' ? error.message : error)//NATHAN
+        }
+    }
 
-        return res.json({
-            status: 0,
-            data: null,
-            message: 'Created'
-        })
+    deleteUser = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const userRepo = getRepository(Users)
+            const result = await userRepo.delete({ id: 6 }) //params
+
+            return res.json({})
+        } catch (error) {
+            return res.json(typeof(error) === 'object' ? error.message : error)//NATHAN
+        }
     }
 
     setRoutes(router: Router) {
         router.get('/users', this.getUsers)
         router.post('/users', this.addUser)
+        router.delete('/users', this.deleteUser)
     }
 }
