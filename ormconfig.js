@@ -11,4 +11,9 @@ module.exports = {
     logging: true,
     dropSchema: false, //Don't use this in production or can lose all our data.
     synchronize: false, //Don't use this in production or can lose all our data.
+    cli: {
+        entitiesDir: 'src/entity',
+        migrationsDir: 'src/migration',
+        subscribersDir: 'src/subscriber'
+    }
  }
