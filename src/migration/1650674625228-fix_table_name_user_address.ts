@@ -4,13 +4,13 @@ export class fixTableNameUserAddress1650674111126 implements MigrationInterface 
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        alter table users__adress rename to users__address;
-      `)
+      alter table users__adress rename to users__address;
+    `)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        alter table users__address rename to users__adress;
-      `)
+      alter table users__address rename to users__adress;
+    `)
   }
 }
