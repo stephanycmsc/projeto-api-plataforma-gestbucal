@@ -8,6 +8,10 @@ export class createTableUsers_types1650411778877 implements MigrationInterface {
         id serial primary key,
         description varchar(32) unique
       )
+      create table users__users (
+        id serial primary key,
+        description varchar(32) unique
+      )
     `)
   }
 
