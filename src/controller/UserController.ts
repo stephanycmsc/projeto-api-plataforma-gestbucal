@@ -1,7 +1,7 @@
 import * as express from "express"
 import { getRepository } from "typeorm";
 import { Request, Response, Router } from "express";
-import { UsersTypes } from "../entity/UsersTypes";
+import { UsersTypes } from "../database/entities/UsersTypes";
 
 export default class UserController {
   getUsers = async (req: Request, res: Response): Promise<Response> => {
