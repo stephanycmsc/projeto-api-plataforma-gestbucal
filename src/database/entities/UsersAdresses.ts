@@ -7,14 +7,11 @@ export class UsersAdresses {
   @PrimaryGeneratedColumn()
   id: ID;
 
-  @Column({ name: 'cep', nullable: false, unique: false, length: 8 })
-  cep: string;
+  @Column({ name: 'cep', nullable: true, unique: false, length: 8 })
+  zipcode: string;
 
   @Column({ name: 'street', nullable: false, unique: false, length: 32 })
   street: string;
-
-  @Column({ name: 'street_number', nullable: false, unique: false, length: 32 })
-  street_number: string;
 
   @Column({ name: 'city', nullable: false, unique: false, length: 20 })
   city: string;

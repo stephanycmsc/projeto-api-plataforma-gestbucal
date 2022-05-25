@@ -11,7 +11,7 @@ export class UsersRegisters {
   @Column({ name: 'username', nullable: false, unique: true, length: 32 })
   username: string;
 
-  @Column({ name: 'email', nullable: false, unique: true, length: 32 })
+  @Column({ name: 'email', nullable: false, unique: true, length: 64 })
   email: string;
 
   @Column({ name: 'password', nullable: false, unique: false, select: false, length: 16 })
