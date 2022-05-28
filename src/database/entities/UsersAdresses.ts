@@ -1,12 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { ID } from '../../types'
-import { UsersRegisters } from "./UsersRegisters";
+import UsersRegisters from "./UsersRegisters";
+import BaseEntity from "./BaseEntity";
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn
+} from "typeorm";
 
 @Entity({ name: 'users__adresses' })
-export class UsersAdresses {
-  @PrimaryGeneratedColumn()
-  id: ID;
-
+export default class UsersAdresses extends BaseEntity {
   @Column({ name: 'zipcode', nullable: true, default: null, unique: false, length: 8 })
   zipcode: string;
 
@@ -22,7 +24,7 @@ export class UsersAdresses {
   @Column({ name: 'complement', nullable: true, unique: false, length: 32 })
   complement: string;
 
-  @ManyToOne(() => UsersRegisters, { nullable: false })
+  @ManyToOne(() => UsersRegisters, { nullable: false, cascade: ['insert', 'soft-remove', 'update'] })
   @JoinColumn({ name: 'users__registers_id' })
   usersRegistersId: UsersRegisters;
 }

@@ -1,13 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { ID } from '../../types'
-import { UsersAdresses } from "./UsersAdresses";
-import { UsersTypes } from './UsersTypes';
+import UsersAdresses from "./UsersAdresses";
+import UsersTypes from './UsersTypes';
+import BaseEntity from "./BaseEntity";
+import {
+  Entity,
+  Column,
+  JoinColumn,
+  ManyToOne,
+  OneToMany
+} from "typeorm";
 
 @Entity({ name: 'users__registers' })
-export class UsersRegisters {
-  @PrimaryGeneratedColumn()
-  id: ID;
-
+export default class UsersRegisters extends BaseEntity {
   @Column({ name: 'username', nullable: false, unique: true, length: 32 })
   username: string;
 
