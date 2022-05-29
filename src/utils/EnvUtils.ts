@@ -1,0 +1,1 @@
+export const { ARGON2_SECRET } = process .env

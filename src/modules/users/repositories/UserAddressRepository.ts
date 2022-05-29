@@ -7,5 +7,5 @@ export default class UserAddressRepository {
   createEntity = (data: any) => this.repo.create(data as UsersAdresses)
 
   /** Cria o endereço do usuário. */
-  create = async (data: UsersAdresses) => { return await this.repo.save(data) }
+  create = async (data: UsersAdresses) => await this.repo.save(data)
 }

@@ -1,9 +1,11 @@
 import UserRegisterService from "../services/UserRegisterService";
 import UserAddressService from "../services/UserAddressService";
+import argon2 from 'argon2'
 import { Response, Router } from "express";
 import { TypedReq } from "../../../types";
 import { CREATE_BODY } from "../contracts/UserRegisterContract";
 import { StatusCodes } from "http-status-codes";
+import { ARGON2_SECRET } from '../../../utils/EnvUtils'
 
 export default class UserRegisterController {
   private path = '/users'
@@ -14,7 +16,8 @@ export default class UserRegisterController {
 
   create = async (req: TypedReq<any, CREATE_BODY>, res: Response) => {
     try {
-      const userRegister = this.userRegisterService.createEntity(req.body)
+      const data = { ...req.body, password: await argon2.hash(`${req.body.password}${ARGON2_SECRET}`) }
+      const userRegister = this.userRegisterService.createEntity(data)
       const userAddress = this.userAddressService.createEntity(req.body.address)
 
       userAddress.usersRegistersId = userRegister
