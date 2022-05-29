@@ -1,1 +1,9 @@
-export const { ARGON2_SECRET } = process .env
+export const {
+  PORT,
+  RDS_SBUFPE_SERVER_HOST,
+  RDS_SBUFPE_SERVER_DB_PORT,
+  RDS_SBUFPE_SERVER_USER,
+  RDS_SBUFPE_SERVER_PWD,
+  RDS_SBUFPE_SERVER_DB,
+  ARGON2_SECRET,
+} = process .env

@@ -5,9 +5,9 @@ import express, {
   Response
 } from 'express'
 import { createConnection } from 'typeorm'
+import { PORT } from './utils/EnvUtils'
 
 export default class App {
-  private port = process.env.PORT
   public app: express.Application
 
   public constructor() {
@@ -20,7 +20,7 @@ export default class App {
       this.app.use((await import('./routes')).router)
       this.app.use(this.formatResponse)
       this.app.all('/', (_, res) => { res.send(`Server is running!`) })
-      this.app.listen(this.port, () => { console.log(`Server running in port: ${this.port}`) })
+      this.app.listen(PORT, () => { console.log(`Server running in port: ${PORT}`) })
     }).catch((err) => console.error(`Connection with database failed: ${err}`))
   }
 
