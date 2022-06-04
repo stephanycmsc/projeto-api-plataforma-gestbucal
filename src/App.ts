@@ -1,11 +1,13 @@
 require('dotenv/config')
-import express, {
-  NextFunction,
-  Request,
-  Response
-} from 'express'
+import express from 'express'
 import { createConnection } from 'typeorm'
 import { PORT } from './utils/EnvUtils'
+import { UserRegisterController } from '../src/modules/users/controllers/UserRegisterController'
+import { ControllerTarget } from './decorators/types'
+import collectRoutes from './helpers/collectRoutes'
+import errorHandlerMiddleware from './middlewares/errorHandlerMiddleware'
+
+const controllerSet = new Set<ControllerTarget<unknown>>([UserRegisterController]);
 
 export default class App {
   public app: express.Application
@@ -17,34 +19,10 @@ export default class App {
 
   public startApp() {
     createConnection().then(async connection => {
-      this.app.use((await import('./routes')).router)
-      this.app.use(this.formatResponse)
+      this.app.use(collectRoutes(controllerSet));
+      this.app.use(errorHandlerMiddleware);
       this.app.all('/', (_, res) => { res.send(`Server is running!`) })
       this.app.listen(PORT, () => { console.log(`Server running in port: ${PORT}`) })
     }).catch((err) => console.error(`Connection with database failed: ${err}`))
-  }
-
-  private formatResponse(_: Request, res: Response, next: NextFunction) {
-    try {
-      const jsonOrig = res.json
-      const replaceJson = (body: any): any => {
-        res.json = jsonOrig
-        if (typeof body === 'object') {
-          res.json({ status: 0, message: null, data: body })
-        } else {
-          res.json({ status: -1, message: body, data: null })
-        }
-      }
-
-      res.json = replaceJson
-      next()
-    } catch (e) {
-      console.log(e)
-      res.json({
-        status: -1,
-        message: 'erro no app ' + (typeof (e) === 'string' ? e : e.message),
-        data: null
-      })
-    }
   }
 }
