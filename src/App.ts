@@ -6,16 +6,13 @@ import { createConnection } from 'typeorm'
 import { PORT } from './utils/EnvUtils'
 
 export default class App {
+  public app = express()
   private routes = new Routes()
   private errorMiddleware = new ErrorMiddleware()
-  public app: express.Application
 
-  public constructor() {
-    this.app = express()
-    this.app.use(express.json({ limit: '50mb' }))
-  }
+  constructor() { this.app.use(express.json({ limit: '50mb' })) }
 
-  public startApp() {
+  startApp() {
     createConnection().then(async connection => {
       this.app.use(this.routes.registerControllers())
       this.app.use(this.errorMiddleware.mapError)
