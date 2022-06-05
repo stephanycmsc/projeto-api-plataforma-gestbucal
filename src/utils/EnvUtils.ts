@@ -6,4 +6,5 @@ export const {
   RDS_SBUFPE_SERVER_PWD,
   RDS_SBUFPE_SERVER_DB,
   ARGON2_SECRET,
+  PRINT_ROUTES_MAP,
 } = process .env
