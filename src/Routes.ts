@@ -35,7 +35,7 @@ export default class Routes {
   private registerRoute(instance: any, basePath: string, route: ControllerRouteMetaInternal) {
     const finalPath = `${basePath}${route.path}`
     const transform = route.transform ?? ((obj: unknown) => obj)
-    const baseRes: BaseResponse<BaseResponseBody<unknown>> = { statusCode: StatusCodes.OK, body: {} }
+    const baseRes: BaseResponse<unknown> = { statusCode: StatusCodes.OK, body: {} }
 
     this.router[route.type](finalPath, (req, res, next) =>
       Promise.resolve().then(async () => {

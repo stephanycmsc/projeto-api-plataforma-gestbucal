@@ -1,7 +1,7 @@
 import { Query } from 'express-static-serve-core'
 
 export type ID = number
-export type BaseResponse<Body> = { statusCode: number, body?: Body }
+export type BaseResponse<ResponseContract> = { statusCode: number, body?: BaseResponseBody<ResponseContract> }
 
 export type BaseResponseBody<ResponseContract> = {
   status?: number
