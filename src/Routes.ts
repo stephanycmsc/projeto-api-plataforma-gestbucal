@@ -1,4 +1,5 @@
 import RoutesUtils from "./utils/RoutesUtils";
+import ExceptionsUtils from './utils/ExceptionsUtils'
 import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
 import {
@@ -11,6 +12,8 @@ import { UserRegisterController } from "./modules/users/controllers/UserRegister
 import { PRINT_ROUTES_MAP } from './utils/EnvUtils'
 import { BaseResponse } from "./types";
 import { ENV } from './utils/EnvUtils'
+import { validationResult } from "express-validator";
+import { ExceptionCodesEnum } from "./enums";
 
 export default class Routes {
   private router = Router()
@@ -35,10 +38,16 @@ export default class Routes {
   private registerRoute(instance: any, basePath: string, route: ControllerRouteMetaInternal) {
     const finalPath = `${basePath}${route.path}`
     const transform = route.transform ?? ((obj: unknown) => obj)
+    const validator = route.validator ?? ((obj: unknown) => obj)
     const baseRes: BaseResponse<unknown> = { statusCode: StatusCodes.OK, body: {} }
 
-    this.router[route.type](finalPath, (req, res, next) =>
+    this.router[route.type](finalPath, validator, (req: any, res: any, next: any) =>
       Promise.resolve().then(async () => {
+        /** O front nunca deverá receber essa mensagem de erro, pois estas validações devem barrar o usúario de fazer uma <request>. */
+        const errors = validationResult(req).array().map(err => new ExceptionsUtils(ExceptionCodesEnum.INVALID_REQUEST_PARAMS, `Campo inválido: <${err.param}>. ${err.msg}`))
+
+        if (errors.length !== 0) throw errors
+
         const result = await instance[route.functionName](req, res, next)
 
         if (route.type === 'post') baseRes.statusCode = StatusCodes.CREATED
@@ -48,13 +57,16 @@ export default class Routes {
         if (result.message) baseRes.body.message = result.message
         if (result.data) baseRes.body.data = transform(result.data)
       }).catch(err => {
-        baseRes.statusCode = err.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR
-        baseRes.body.status = err.status ?? -1
-        baseRes.body.error = {
-          message: err.message ?? 'Erro não mapeado.',
-          detail: err.detail ?? 'Não foi possível obter mais detalhes sobre este erro.',
-          stack: ENV === 'LOCAL' || ENV === 'DEV' ? err.stack : undefined
-        }
+        if (!Array.isArray(err)) err = [err]
+
+        //TODO: Verificar se esse [0] não vai dar peteco.
+        baseRes.statusCode = err[0].statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR
+        baseRes.body.status = err[0].status ?? -1
+        baseRes.body.errors = err.map(e => ({
+          message: e.message ?? 'Erro não mapeado.',
+          detail: e.detail ?? 'Não foi possível obter mais detalhes sobre este erro.',
+          stack: ENV === 'LOCAL-1' || ENV === 'DEV' ? e.stack : undefined
+        }))
       }).finally(() => res.status(baseRes.statusCode).json(baseRes.body))
     )
   }

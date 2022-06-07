@@ -1,3 +1,5 @@
+import { ValidationChain } from "express-validator";
+
 export const CONTROLLER_META = '__controller_meta_key';
 
 export type ID = number
@@ -7,7 +9,7 @@ export type BaseResponseBody<ResponseContract> = {
   status?: number
   message?: string
   data?: ResponseContract
-  error?: {
+  errors?: {
     message: string
     detail: string
     stack?: string
@@ -17,11 +19,13 @@ export type BaseResponseBody<ResponseContract> = {
 export type RequestType = 'get' | 'put' | 'post' | 'delete' | 'patch'
 export type ControllerTransformCallback = (obj: any) => any
 export type RoutePermissionCallback = (permissions: string[]) => boolean
+export type ControllerValidatorCallback = ValidationChain | ValidationChain[]
 
 export type ControllerRouteMeta = {
   path: string
   permissions?: RoutePermissionCallback
   transform?: ControllerTransformCallback
+  validator?: ControllerValidatorCallback
 }
 
 export type ControllerTarget<T> = new () => T
