@@ -1,4 +1,4 @@
-import { ControllerMeta } from "../decorators/types";
+import { ControllerMeta } from "../types";
 
 export default class RoutesUtils {
   printRouteMap(metaList: ControllerMeta<unknown>[]) {

@@ -6,10 +6,10 @@ import {
   ControllerRouteMetaInternal,
   ControllerTarget,
   getControllerMeta
-} from "./decorators/types";
+} from "./types";
 import { UserRegisterController } from "./modules/users/controllers/UserRegisterController";
 import { PRINT_ROUTES_MAP } from './utils/EnvUtils'
-import { BaseResponse, BaseResponseBody } from "./types";
+import { BaseResponse } from "./types";
 import { ENV } from './utils/EnvUtils'
 
 export default class Routes {
