@@ -39,7 +39,7 @@ export default class Routes {
     const finalPath = `${basePath}${route.path}`
     const transform = route.transform ?? ((obj: unknown) => obj)
     const validator = route.validator ?? ((obj: unknown) => obj)
-    const baseRes: BaseResponse<unknown> = { statusCode: StatusCodes.OK, body: {} }
+    let baseRes: BaseResponse<unknown> = { statusCode: StatusCodes.OK, body: {} }
 
     this.router[route.type](finalPath, validator, (req: any, res: any, next: any) =>
       Promise.resolve().then(async () => {
@@ -67,7 +67,11 @@ export default class Routes {
           detail: e.detail ?? 'Não foi possível obter mais detalhes sobre este erro.',
           stack: ENV === 'LOCAL-1' || ENV === 'DEV' ? e.stack : undefined
         }))
-      }).finally(() => res.status(baseRes.statusCode).json(baseRes.body))
+      }).finally(() => {
+        const temp = JSON.parse(JSON.stringify(baseRes))
+        baseRes = { statusCode: StatusCodes.OK, body: {} }
+        return res.status(temp.statusCode).json(temp.body)
+      })
     )
   }
 }
