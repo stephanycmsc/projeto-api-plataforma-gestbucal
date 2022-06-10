@@ -23,6 +23,6 @@ export class UserRegisterController {
 
     userAddress.usersRegistersId = userRegister
 
-    await this.userAddressService.create(userAddress)
+    return await this.userAddressService.create(userAddress)
   }
 }
