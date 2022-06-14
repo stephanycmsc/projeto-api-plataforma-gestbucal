@@ -24,8 +24,8 @@ export default class UsersRegisters extends BaseEntity {
   jsonData: JSON;
 
   @ManyToOne(() => UsersTypes, { nullable: false })
-  @JoinColumn({ name: 'users__types_id' })
-  usersTypesId: UsersTypes;
+  @JoinColumn({ name: 'type_id' })
+  typeId: UsersTypes;
 
   @OneToMany(() => UsersAdresses, address => address.id, { nullable: false })
   @JoinColumn({ name: 'users__address' })

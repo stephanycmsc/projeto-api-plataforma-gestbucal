@@ -4,7 +4,7 @@ export type CREATE_BODY = {
   username: string
   email: string
   password: string
-  usersTypesId: ID
+  typeId: ID
   address: {
     zipcode: string
     street: string

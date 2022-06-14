@@ -9,7 +9,7 @@ import {
 
 @Entity({ name: 'users__adresses' })
 export default class UsersAdresses extends BaseEntity {
-  @Column({ name: 'zipcode', nullable: true, default: null, unique: false, length: 8 })
+  @Column({ name: 'zipcode', nullable: true, default: null, unique: false, length: 9 })
   zipcode: string;
 
   @Column({ name: 'street', nullable: false, unique: false, length: 32 })
