@@ -2,12 +2,7 @@
  * Códigos de erros mapeados.
  * Não utilizar o valor <-1> pois este é o valor <default>.
  */
-export enum ExceptionCodesEnum {
-  INVALID_REQUEST_PARAMS = -4,
-  //TODO: Remover esses caras
-  EMAIL_ALREADY_REGISTERED = -2,
-  USERNAME_ALREADY_REGISTERED = -3
-}
+export enum ExceptionCodesEnum { INVALID_REQUEST_PARAMS = -4 }
 
 export enum MessageEnum {
   MANDATORY_FIELD = 'Este campo é obrigatório',
