@@ -1,4 +1,6 @@
 export default class ValidatorUtils {
+  zipcodeValidator = (zipcode: string) => /^[0-9]{5}-[0-9]{3}$/.test(zipcode)
+
   isLength(value: string, min?: number, max?: number) {
     let errors: string = undefined
 
