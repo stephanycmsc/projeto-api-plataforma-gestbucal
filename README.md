@@ -1,1 +1,1 @@
-micro-api-plataforma-ufpe
+projeto-api-plataforma-gestbucal
